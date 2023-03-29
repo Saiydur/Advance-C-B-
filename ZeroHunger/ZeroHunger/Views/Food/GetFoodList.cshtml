@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ZeroHunger.Models.NgoFoodViewModel>
+@{
+    ViewBag.Title = "GetFoodList";
+}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.FoodType)</th>
+                <th>@Html.DisplayNameFor(model => model.FoodQuantity)</th>
+                <th>@Html.DisplayNameFor(model => model.FoodExpiryDate)</th>
+                <th>@Html.DisplayNameFor(model => model.CollectionTime)</th>
+                <th>@Html.DisplayNameFor(model => model.PreservationTime)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodExpiryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CollectionTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PreservationTime)
+                    </td>
+                    <td>
+                        @{
+                            if (item.Status == "false")
+                            {
+                                <span class="label label-success">Available</span>
+                            }
+                            else
+                            {
+                                <span class="label label-danger">Booked</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.Status == "false")
+                            {
+                                @Html.ActionLink("Assign Employee", "AssignEmployee", new { id = item.FoodId })
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

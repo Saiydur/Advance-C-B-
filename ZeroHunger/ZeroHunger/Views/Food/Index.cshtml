@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ZeroHunger.Models.FoodViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    if (TempData["ResponseMsg"] != null)
+    {
+        <div class="alert alert-@(TempData["Type"].ToString().ToLower())" role="alert">
+            @TempData["ResponseMsg"]
+        </div>
+    }
+}
+
+<p>
+    @Html.ActionLink("Add Food", "AddFood")
+</p>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.FoodType)</th>
+                <th>@Html.DisplayNameFor(model => model.FoodQuantity)</th>
+                <th>@Html.DisplayNameFor(model => model.FoodExpiryDate)</th>
+                <th>@Html.DisplayNameFor(model => model.CollectionTime)</th>
+                <th>@Html.DisplayNameFor(model => model.PreservationTime)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodExpiryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CollectionTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PreservationTime)
+                    </td>
+                    <td>
+                        @{
+                            if (item.Status == "false")
+                            {
+                                <span class="label label-success">Available</span>
+                            }
+                            else
+                            {
+                                <span class="label label-danger">Booked</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.FoodId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.FoodId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

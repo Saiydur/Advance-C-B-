@@ -1,0 +1,45 @@
+﻿@model ZeroHunger.Models.UserLoginModel
+@using ZeroHunger.Utils
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    if (TempData["ResponseMsg"] != null)
+    {
+        <div class="alert alert-@(TempData["Type"].ToString().ToLower())" role="alert">
+            @TempData["ResponseMsg"]
+        </div>
+    }
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "jumbotron" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.RoleType)
+        @Html.DropDownListFor(m => m.RoleType, new SelectList(Enum.GetValues(typeof(UserRole))), "-- Login Type --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RoleType, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+
+    <div>
+        <small>Don't have account? <span>@Html.ActionLink("Register","Index","Register")</span></small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+}

@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ZeroHungerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Collect Request">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Restaurant ID" Type="uniqueidentifier" />
+          <Property Name="Collection Time" Type="nvarchar(max)" />
+          <Property Name="Preservation Time" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Collect Request ID" Type="uniqueidentifier" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Expiry Date" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NGO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NGOCollection">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="NGO ID" Type="uniqueidentifier" />
+          <Property Name="Employee ID" Type="uniqueidentifier" />
+          <Property Name="Food ID" Type="uniqueidentifier" />
+          <Property Name="Collect Request ID" Type="uniqueidentifier" />
+          <Property Name="isCollected" Type="varchar(max)" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Collect Request_Restaurant">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Collect Request" Type="Self.Collect Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Collect Request">
+              <PropertyRef Name="Restaurant ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Food_Collect Request">
+          <End Role="Collect Request" Type="Self.Collect Request" Multiplicity="0..1" />
+          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Collect Request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="Collect Request ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_Collect Request">
+          <End Role="Collect Request" Type="Self.Collect Request" Multiplicity="0..1" />
+          <End Role="NGOCollection" Type="Self.NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Collect Request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="Collect Request ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="NGOCollection" Type="Self.NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="Employee ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_Food">
+          <End Role="Food" Type="Self.Food" Multiplicity="0..1" />
+          <End Role="NGOCollection" Type="Self.NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="Food ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_NGO">
+          <End Role="NGO" Type="Self.NGO" Multiplicity="0..1" />
+          <End Role="NGOCollection" Type="Self.NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="NGO ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZeroHungerModelStoreContainer">
+          <EntitySet Name="Collect Request" EntityType="Self.Collect Request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Food" EntityType="Self.Food" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NGO" EntityType="Self.NGO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NGOCollection" EntityType="Self.NGOCollection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Collect Request_Restaurant" Association="Self.FK_Collect Request_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="Collect Request" EntitySet="Collect Request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Food_Collect Request" Association="Self.FK_Food_Collect Request">
+            <End Role="Collect Request" EntitySet="Collect Request" />
+            <End Role="Food" EntitySet="Food" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_Collect Request" Association="Self.FK_NGOCollection_Collect Request">
+            <End Role="Collect Request" EntitySet="Collect Request" />
+            <End Role="NGOCollection" EntitySet="NGOCollection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_Employee" Association="Self.FK_NGOCollection_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="NGOCollection" EntitySet="NGOCollection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_Food" Association="Self.FK_NGOCollection_Food">
+            <End Role="Food" EntitySet="Food" />
+            <End Role="NGOCollection" EntitySet="NGOCollection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_NGO" Association="Self.FK_NGOCollection_NGO">
+            <End Role="NGO" EntitySet="NGO" />
+            <End Role="NGOCollection" EntitySet="NGOCollection" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ZeroHungerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Collect_Request">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Restaurant_ID" Type="Guid" />
+          <Property Name="Collection_Time" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Preservation_Time" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Collect_Request_Restaurant" FromRole="Collect_Request" ToRole="Restaurant" />
+          <NavigationProperty Name="Foods" Relationship="Self.FK_Food_Collect_Request" FromRole="Collect_Request" ToRole="Food" />
+          <NavigationProperty Name="NGOCollections" Relationship="ZeroHungerModel.FK_NGOCollection_Collect_Request" FromRole="Collect_Request" ToRole="NGOCollection" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGOCollections" Relationship="ZeroHungerModel.FK_NGOCollection_Employee" FromRole="Employee" ToRole="NGOCollection" />
+        </EntityType>
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Collect_Request_ID" Type="Guid" />
+          <Property Name="Type" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Expiry_Date" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Collect_Request" Relationship="Self.FK_Food_Collect_Request" FromRole="Food" ToRole="Collect_Request" />
+          <NavigationProperty Name="NGOCollections" Relationship="ZeroHungerModel.FK_NGOCollection_Food" FromRole="Food" ToRole="NGOCollection" />
+        </EntityType>
+        <EntityType Name="NGO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGOCollections" Relationship="ZeroHungerModel.FK_NGOCollection_NGO" FromRole="NGO" ToRole="NGOCollection" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Collect_Request" Relationship="Self.FK_Collect_Request_Restaurant" FromRole="Restaurant" ToRole="Collect_Request" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Collect_Request_Restaurant">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Collect_Request" Type="Self.Collect_Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Collect_Request">
+              <PropertyRef Name="Restaurant_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Food_Collect_Request">
+          <End Role="Collect_Request" Type="Self.Collect_Request" Multiplicity="0..1" />
+          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Collect_Request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="Collect_Request_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZeroHungerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Collect_Requests" EntityType="Self.Collect_Request" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Foods" EntityType="Self.Food" />
+          <EntitySet Name="NGOes" EntityType="Self.NGO" />
+          <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+          <AssociationSet Name="FK_Collect_Request_Restaurant" Association="Self.FK_Collect_Request_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="Collect_Request" EntitySet="Collect_Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Food_Collect_Request" Association="Self.FK_Food_Collect_Request">
+            <End Role="Collect_Request" EntitySet="Collect_Requests" />
+            <End Role="Food" EntitySet="Foods" />
+          </AssociationSet>
+          <EntitySet Name="NGOCollections" EntityType="ZeroHungerModel.NGOCollection" />
+          <AssociationSet Name="FK_NGOCollection_Collect_Request" Association="ZeroHungerModel.FK_NGOCollection_Collect_Request">
+            <End Role="Collect_Request" EntitySet="Collect_Requests" />
+            <End Role="NGOCollection" EntitySet="NGOCollections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_Employee" Association="ZeroHungerModel.FK_NGOCollection_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="NGOCollection" EntitySet="NGOCollections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_Food" Association="ZeroHungerModel.FK_NGOCollection_Food">
+            <End Role="Food" EntitySet="Foods" />
+            <End Role="NGOCollection" EntitySet="NGOCollections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NGOCollection_NGO" Association="ZeroHungerModel.FK_NGOCollection_NGO">
+            <End Role="NGO" EntitySet="NGOes" />
+            <End Role="NGOCollection" EntitySet="NGOCollections" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="NGOCollection">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="NGO_ID" Type="Guid" />
+          <Property Name="Employee_ID" Type="Guid" />
+          <Property Name="Food_ID" Type="Guid" />
+          <Property Name="Collect_Request_ID" Type="Guid" />
+          <Property Name="isCollected" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Collect_Request" Relationship="ZeroHungerModel.FK_NGOCollection_Collect_Request" FromRole="NGOCollection" ToRole="Collect_Request" />
+          <NavigationProperty Name="Employee" Relationship="ZeroHungerModel.FK_NGOCollection_Employee" FromRole="NGOCollection" ToRole="Employee" />
+          <NavigationProperty Name="Food" Relationship="ZeroHungerModel.FK_NGOCollection_Food" FromRole="NGOCollection" ToRole="Food" />
+          <NavigationProperty Name="NGO" Relationship="ZeroHungerModel.FK_NGOCollection_NGO" FromRole="NGOCollection" ToRole="NGO" />
+        </EntityType>
+        <Association Name="FK_NGOCollection_Collect_Request">
+          <End Type="ZeroHungerModel.Collect_Request" Role="Collect_Request" Multiplicity="0..1" />
+          <End Type="ZeroHungerModel.NGOCollection" Role="NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Collect_Request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="Collect_Request_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_Employee">
+          <End Type="ZeroHungerModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="ZeroHungerModel.NGOCollection" Role="NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="Employee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_Food">
+          <End Type="ZeroHungerModel.Food" Role="Food" Multiplicity="0..1" />
+          <End Type="ZeroHungerModel.NGOCollection" Role="NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="Food_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NGOCollection_NGO">
+          <End Type="ZeroHungerModel.NGO" Role="NGO" Multiplicity="0..1" />
+          <End Type="ZeroHungerModel.NGOCollection" Role="NGOCollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGOCollection">
+              <PropertyRef Name="NGO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ZeroHungerModelStoreContainer" CdmEntityContainer="ZeroHungerEntities">
+          <EntitySetMapping Name="Collect_Requests">
+            <EntityTypeMapping TypeName="ZeroHungerModel.Collect_Request">
+              <MappingFragment StoreEntitySet="Collect Request">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Restaurant_ID" ColumnName="Restaurant ID" />
+                <ScalarProperty Name="Collection_Time" ColumnName="Collection Time" />
+                <ScalarProperty Name="Preservation_Time" ColumnName="Preservation Time" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="ZeroHungerModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Foods">
+            <EntityTypeMapping TypeName="ZeroHungerModel.Food">
+              <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Collect_Request_ID" ColumnName="Collect Request ID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NGOes">
+            <EntityTypeMapping TypeName="ZeroHungerModel.NGO">
+              <MappingFragment StoreEntitySet="NGO">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Restaurants">
+            <EntityTypeMapping TypeName="ZeroHungerModel.Restaurant">
+              <MappingFragment StoreEntitySet="Restaurant">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NGOCollections">
+            <EntityTypeMapping TypeName="ZeroHungerModel.NGOCollection">
+              <MappingFragment StoreEntitySet="NGOCollection">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="isCollected" ColumnName="isCollected" />
+                <ScalarProperty Name="Collect_Request_ID" ColumnName="Collect Request ID" />
+                <ScalarProperty Name="Food_ID" ColumnName="Food ID" />
+                <ScalarProperty Name="Employee_ID" ColumnName="Employee ID" />
+                <ScalarProperty Name="NGO_ID" ColumnName="NGO ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

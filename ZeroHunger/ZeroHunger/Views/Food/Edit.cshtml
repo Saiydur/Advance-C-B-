@@ -1,0 +1,46 @@
+﻿@model ZeroHunger.Models.FoodEditModel
+@using ZeroHunger.Utils
+@{
+    ViewBag.Title = "Edit Food";
+}
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Food", FormMethod.Post, new { @class = "jumbotron" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.FoodId)
+    <h1>Food Collection Schedule</h1>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CollectionTime)
+        @Html.TextBoxFor(m => m.CollectionTime, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+        @Html.ValidationMessageFor(m => m.CollectionTime, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.PreservationTime)
+        @Html.TextBoxFor(m => m.PreservationTime, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+        @Html.ValidationMessageFor(m => m.PreservationTime, "", new { @class = "text-danger" })
+    </div>
+    <h1>Food Details</h1>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FoodType)
+        @Html.DropDownListFor(m => m.FoodType, new SelectList(Enum.GetValues(typeof(FoodType))), "-- Select Food Type --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FoodType, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FoodQuantity)
+        @Html.TextBoxFor(m => m.FoodQuantity, new { type = "number", min = "0", step = "1", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FoodQuantity, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FoodExpiryDate)
+        @Html.TextBoxFor(m => m.FoodExpiryDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+        @Html.ValidationMessageFor(m => m.FoodExpiryDate, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Food</button>
+}

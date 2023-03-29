@@ -1,0 +1,72 @@
+﻿@model ZeroHunger.Models.FoodAssignEmployeeModel
+@{
+    ViewBag.Title = "AssignEmployee";
+    var selectList = new SelectList(Model.Employees, "ID", "Name");
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Food Type</th>
+                <th>Food Quantity</th>
+                <th>Food Expiry Date</th>
+                <th>Collection Time</th>
+                <th>Preservation Time</th>
+                <th>Employee</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.FoodType)</td>
+                <td>@Html.DisplayFor(model => model.FoodQuantity)</td>
+                <td>@Html.DisplayFor(model => model.FoodExpiryDate)</td>
+                <td>@Html.DisplayFor(model => model.CollectionTime)</td>
+                <td>@Html.DisplayFor(model => model.PreservationTime)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.Employees, selectList, "Select an employee", new { @class = "form-control", id = "EmployeesID" })
+                    @Html.HiddenFor(model => model.EmployeeId, new { Name = "EmployeeId"})
+                </td>
+                <td>
+                    @using (Html.BeginForm("AssignEmployee", "Food", FormMethod.Post, new { @class = "form-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.FoodId)
+                        @Html.HiddenFor(model => model.NgoId)
+                        @Html.HiddenFor(model => model.CollectionRequestId)
+                        @Html.HiddenFor(model => model.Status)
+                        @Html.HiddenFor(model => model.FoodType)
+                        @Html.HiddenFor(model => model.FoodQuantity)
+                        @Html.HiddenFor(model => model.FoodExpiryDate)
+                        @Html.HiddenFor(model => model.CollectionTime)
+                        @Html.HiddenFor(model => model.PreservationTime)
+                        @Html.HiddenFor(model => model.EmployeeId)
+
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let selectedValue = ""
+            $("#EmployeesID").change(function () {
+                selectedValue = $(this).val();
+                $("input[name='EmployeeId']").val(selectedValue);
+                console.log(selectedValue);
+            });
+        });
+        $("form").submit(function () {
+            if (selectedValue == "") {
+                alert("Please select an employee");
+                return false;
+            }
+            console.log("employee id: " + $("input[name='EmployeeId']").val())
+        });
+    </script>
+}
