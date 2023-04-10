@@ -26,14 +26,27 @@ namespace NewsAppBlog.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var factory = new ConnectionFactory() { HostName = "localhost", UserName = "guest", Password = "guest" };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: "category_queue",
+                                     durable: false,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
 
-            
-            var message = new { cmd = "getCategories" };
-            var json = JsonConvert.SerializeObject(message);
-            _rabbitMQService.SendMessage(json);
+                var message = "getcategories";
+                var body = Encoding.UTF8.GetBytes(message);
 
-            return categories;
+                channel.BasicPublish(exchange: "",
+                                     routingKey: "category_queue",
+                                     basicProperties: null,
+                                     body: body);
+
+                Console.WriteLine("Sent message: {0}", message);
+            }
+            return await _context.Categories.ToListAsync();
         }
 
         [HttpPost]
